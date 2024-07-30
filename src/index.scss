@@ -15,7 +15,7 @@ main {
   align-items: stretch;
 }
 
-button {
+.button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -26,7 +26,21 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
   color: white;
+
+  &--delete {
+    align-self: flex-start;
+  }
 }
+.todo {
+  flex: 1 1 auto;
+}
+
+.todo-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 button:hover {
   border-color: #646cff;
 }

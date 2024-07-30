@@ -11,17 +11,26 @@ function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
 
   useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
+    const subscription = client.models.Todo.observeQuery().subscribe({
       next: (data) => setTodos([...data.items]),
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
+    const content = window.prompt("Todo content");
+    if (content) {
+      client.models.Todo.create({ content, isDone: false });
+    }
   }
 
   function deleteTodo(id: string) {
     client.models.Todo.delete({ id });
+  }
+
+  function toggleTodo(id: string, isDone: boolean) {
+    client.models.Todo.update({ id, isDone: !isDone });
   }
 
   return (
@@ -29,11 +38,24 @@ function App() {
       {({ signOut, user }) => (
         <main>
           <h1>{user?.signInDetails?.loginId}'s todos</h1>
-          <button onClick={createTodo}>+ new</button>
+          <button className="button" onClick={createTodo}>
+            + new
+          </button>
           <ul>
             {todos.map((todo) => (
-              <li onClick={() => deleteTodo(todo.id)} key={todo.id}>
-                {todo.content}
+              <li className="todo-container" key={todo.id}>
+                <input
+                  type="checkbox"
+                  checked={todo.isDone ?? false}
+                  onChange={() => toggleTodo(todo.id, todo.isDone ?? false)}
+                />
+                <span className="todo">{todo.content}</span>
+                <button
+                  className="button button--delete"
+                  onClick={() => deleteTodo(todo.id)}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
@@ -44,7 +66,9 @@ function App() {
               Review next step of this tutorial.
             </a>
           </div>
-          <button onClick={signOut}>Sign out</button>
+          <button className="button" onClick={signOut}>
+            Sign out
+          </button>
         </main>
       )}
     </Authenticator>
