@@ -1,3 +1,8 @@
+
+<img width="1135" alt="Screenshot 2024-07-30 at 13 55 32" src="https://github.com/user-attachments/assets/32cc26cc-6752-43f0-836c-706e189bc739">
+
+
+
 ## AWS Amplify React+Vite Starter Template
 
 This repository provides a starter template for creating applications using React+Vite and AWS Amplify, emphasizing easy setup for authentication, API, and database capabilities.
